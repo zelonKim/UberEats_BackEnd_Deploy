@@ -83,12 +83,13 @@ import { UploadsModule } from './uploads/uploads.module';
       //     token: req ? req.headers[TOKEN_KEY] : connection.context[TOKEN_KEY],
       //   };
       // },
+
       autoSchemaFile: true,
       context: ({ req }) => {
         if (req && req.headers) {
           return { token: req.headers['x-jwt'] };
         }
-      },
+      }
     }),
 
     ScheduleModule.forRoot(),
