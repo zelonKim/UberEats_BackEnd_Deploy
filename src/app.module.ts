@@ -56,7 +56,8 @@ import { UploadsModule } from './uploads/uploads.module';
             password: process.env.DB_PASSWORD,
             database: process.env.DB_NAME,
           }),
-      synchronize: process.env.NODE_ENV !== 'production',
+      //synchronize: process.env.NODE_ENV !== 'production',
+      synchronize: true,
       logging:
         process.env.NODE_ENV !== 'production' &&
         process.env.NODE_ENV !== 'test',
@@ -89,7 +90,7 @@ import { UploadsModule } from './uploads/uploads.module';
         if (req && req.headers) {
           return { token: req.headers['x-jwt'] };
         }
-      }
+      },
     }),
 
     ScheduleModule.forRoot(),
