@@ -48,6 +48,7 @@ export class UserService {
       this.mailService.sendVerificationEmail(user.email, verification.code);
       return { ok: true };
     } catch (e) {
+      console.log(e);
       return { ok: false, error: '해당 계정을 생성할 수 없습니다.' };
     }
   }
@@ -143,7 +144,6 @@ export class UserService {
       return {
         ok: true,
       };
-      
     } catch (error) {
       return { ok: false, error: '프로필을 업데이트 할 수 없습니다.' };
     }
