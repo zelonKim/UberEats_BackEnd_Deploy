@@ -73,14 +73,21 @@ import { UploadsModule } from './uploads/uploads.module';
     }),
 
     GraphQLModule.forRoot({
-      //playground: process.env.NODE_ENV !== 'production',
-      installSubscriptionHandlers: true,
+      // 에러 방지를 위해 웹소켓 기능 중단
+      // playground: process.env.NODE_ENV !== 'production',
+      // installSubscriptionHandlers: true,
+      // autoSchemaFile: true,
+      // context: ({ req, connection }) => {
+      //   const TOKEN_KEY = 'x-jwt';
+      //   return {
+      //     token: req ? req.headers[TOKEN_KEY] : connection.context[TOKEN_KEY],
+      //   };
+      // },
       autoSchemaFile: true,
-      context: ({ req, connection }) => {
-        const TOKEN_KEY = 'x-jwt';
-        return {
-          token: req ? req.headers[TOKEN_KEY] : connection.context[TOKEN_KEY],
-        };
+      context: ({ req }) => {
+        if (req && req.headers) {
+          return { token: req.headers['x-jwt'] };
+        }
       },
     }),
 
