@@ -282,13 +282,13 @@ export class RestaurantService {
       if (!restaurant) {
         return {
           ok: false,
-          error: 'Restaurant not found',
+          error: '레스토랑을 찾을 수 없습니다.',
         };
       }
       if (owner.id !== restaurant.ownerId) {
         return {
           ok: false,
-          error: "You can't do that.",
+          error: '레스토랑 주인만 메뉴를 추가할 수 있습니다.',
         };
       }
       await this.dishes.save(
@@ -301,12 +301,24 @@ export class RestaurantService {
       console.log(error);
       return {
         ok: false,
-        error: 'Could not create dish',
+        error: '메뉴를 추가할 수 없습니다.',
       };
     }
   }
 
-  async checkDishOwner(ownerId: number, dishId: number) {}
+  async checkDishOwner(ownerId: number, dishId: number): Promise<boolean> {
+    try {
+      const dish = await this.dishes.findOne(dishId, {
+        relations: ['restaurant'],
+      });
+      if (!dish) {
+        return false;
+      }
+      return dish.restaurant.ownerId === ownerId;
+    } catch {
+      return false;
+    }
+  }
 
   async editDish(
     owner: User,
