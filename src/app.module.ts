@@ -81,12 +81,12 @@ import { UploadsModule } from './uploads/uploads.module';
 
     GraphQLModule.forRoot({
       playground: process.env.NODE_ENV !== 'production',
-      installSubscriptionHandlers: true,
+      installSubscriptionHandlers: false, // WebSocket 비활성화 - 배포 환경에서 연결 문제 해결
       autoSchemaFile: true,
-      context: ({ req, connection }) => {
+      context: ({ req }) => {
         const TOKEN_KEY = 'x-jwt';
         return {
-          token: req ? req.headers[TOKEN_KEY] : connection.context[TOKEN_KEY],
+          token: req ? req.headers[TOKEN_KEY] : undefined,
         };
       },
       // autoSchemaFile: true,
