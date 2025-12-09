@@ -71,22 +71,16 @@ import { UploadsModule } from './uploads/uploads.module';
         OrderItem,
         Payment,
       ],
-      extra: {
-        max: 10, // 최대 연결 수 제한 (Heroku 무료 플랜은 보통 20개)
-        min: 2, // 최소 연결 수
-        idleTimeoutMillis: 30000, // 30초 후 유휴 연결 종료
-        connectionTimeoutMillis: 2000, // 2초 내 연결 실패 시 타임아웃
-      },
     }),
 
     GraphQLModule.forRoot({
       playground: process.env.NODE_ENV !== 'production',
-      installSubscriptionHandlers: false, // WebSocket 비활성화 - 배포 환경에서 연결 문제 해결
+      installSubscriptionHandlers: true,
       autoSchemaFile: true,
-      context: ({ req }) => {
+      context: ({ req, connection }) => {
         const TOKEN_KEY = 'x-jwt';
         return {
-          token: req ? req.headers[TOKEN_KEY] : undefined,
+          token: req ? req.headers[TOKEN_KEY] : connection.context[TOKEN_KEY],
         };
       },
       // autoSchemaFile: true,
