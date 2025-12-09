@@ -71,6 +71,12 @@ import { UploadsModule } from './uploads/uploads.module';
         OrderItem,
         Payment,
       ],
+      extra: {
+        max: 10, // 최대 연결 수 제한 (Heroku 무료 플랜은 보통 20개)
+        min: 2, // 최소 연결 수
+        idleTimeoutMillis: 30000, // 30초 후 유휴 연결 종료
+        connectionTimeoutMillis: 2000, // 2초 내 연결 실패 시 타임아웃
+      },
     }),
 
     GraphQLModule.forRoot({
