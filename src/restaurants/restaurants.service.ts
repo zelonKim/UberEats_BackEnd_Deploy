@@ -184,6 +184,7 @@ export class RestaurantService {
         },
         take: 25,
         skip: (page - 1) * 25,
+        relations: ['category'],
       });
       const totalResults = await this.countRestaurants(category);
       return {
@@ -192,7 +193,8 @@ export class RestaurantService {
         category,
         totalPages: Math.ceil(totalResults / 25),
       };
-    } catch {
+    } catch (error) {
+      console.error('Error loading category:', error);
       return {
         ok: false,
         error: 'Could not load category',
@@ -208,6 +210,7 @@ export class RestaurantService {
         order: {
           isPromoted: 'DESC',
         },
+        relations: ['category'],
       });
       return {
         ok: true,
@@ -215,7 +218,8 @@ export class RestaurantService {
         totalPages: Math.ceil(totalResults / 4),
         totalResults,
       };
-    } catch {
+    } catch (error) {
+      console.error('Error loading restaurants:', error);
       return {
         ok: false,
         error: 'Could not load restaurants',
@@ -259,6 +263,7 @@ export class RestaurantService {
         },
         skip: (page - 1) * 25,
         take: 25,
+        relations: ['category'],
       });
       return {
         ok: true,
@@ -266,7 +271,8 @@ export class RestaurantService {
         totalResults,
         totalPages: Math.ceil(totalResults / 25),
       };
-    } catch {
+    } catch (error) {
+      console.error('Error searching restaurants:', error);
       return { ok: false, error: 'Could not search for restaurants' };
     }
   }
