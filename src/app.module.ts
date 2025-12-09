@@ -71,6 +71,21 @@ import { UploadsModule } from './uploads/uploads.module';
         OrderItem,
         Payment,
       ],
+      // 연결 풀 설정
+      extra: {
+        max: 5, // 최대 연결 수를 5개로 제한
+        min: 1, // 최소 연결 수
+        idleTimeoutMillis: 30000, // 30초 후 유휴 연결 자동 종료
+        connectionTimeoutMillis: 30000, // 30초 내 연결 실패 시 타임아웃 (네트워크 지연 고려)
+        // 연결 재사용 최적화
+        statement_timeout: 30000, // 30초 후 쿼리 타임아웃 (쿼리 실행 시간)
+        query_timeout: 30000, // 30초 후 쿼리 타임아웃
+        // 연결이 끊어졌을 때 자동 재연결
+        keepAlive: true,
+        keepAliveInitialDelayMillis: 30000,
+        // 연결 풀에서 연결을 재사용하므로 매번 새로 연결하지 않음
+        // 실제로는 풀에서 가져오므로 connectionTimeoutMillis는 풀이 비어있을 때만 적용됨
+      },
     }),
 
     GraphQLModule.forRoot({
